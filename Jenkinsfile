@@ -74,7 +74,7 @@ pipeline {
      post {
         always {
             // Send email notification
-            mail to: 'abidnauman0@gmail.com.com',
+            mail to: 'qasimziak33@gmail.com',
                  subject: 'Pipeline Status',
                  body: "The pipeline has completed. Status: ${currentBuild.currentResult}",
                  from: 'qasimziak85@gmail.com.com'
