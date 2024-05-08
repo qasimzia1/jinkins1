@@ -1,62 +1,82 @@
 pipeline {
     agent any
-    
-    environment {
-        DIRECTORY_PATH = "/path/to/code"
-        TESTING_ENVIRONMENT = "testing"
-        PRODUCTION_ENVIRONMENT = "production"
-    }
-    
     stages {
         stage('Build') {
             steps {
-                echo "Fetching the source code from the directory path specified by the environment variable: ${env.DIRECTORY_PATH}"
-                echo "Compiling the code and generating any necessary artifacts"
-                
+                echo '''
+                Stage 1: Build
+                Task: Build the code using a build automation tool to compile and package your code.
+                Tool: Maven
+                '''
             }
         }
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests"
-                echo "Running integration tests"
-               
+                echo '''
+                Stage 2: Unit and Integration Tests
+                Task: Run unit tests to ensure the code functions as expected and run integration tests to ensure the different components of the application work together as expected.
+                Tools: JUnit (for Unit Tests), TestNG (for Integration Tests)
+                '''
             }
         }
-        stage('Code Quality Check') {
+        stage('Code Analysis') {
             steps {
-                echo "Checking the quality of the code"
-                
+                echo '''
+                Stage 3: Code Analysis
+                Task: Integrate a code analysis tool to analyze the code and ensure it meets industry standards.
+                Tool: SonarQube
+                '''
             }
         }
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploying the application to a testing environment specified by the environment variable: ${env.TESTING_ENVIRONMENT}"
-                
+                echo '''
+                Stage 4: Security Scan
+                Task: Perform a security scan on the code using a tool to identify any vulnerabilities.
+                Tool: OWASP Dependency-Check
+                '''
             }
         }
-        stage('Approval') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Waiting for manual approval..."
-                sleep time: 10, unit: 'SECONDS'
+                echo '''
+                Stage 5: Deploy to Staging
+                Task: Deploy the application to a staging server.
+                Tool: AWS EC2 (Staging)
+                '''
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo '''
+                Stage 6: Integration Tests on Staging
+                Task: Run integration tests on the staging environment to ensure the application functions as expected in a production-like environment.
+                Tool: Selenium
+                '''
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploying the code to the production environment using the environment variable specifying the environment name: ${env.PRODUCTION_ENVIRONMENT}"
-                
+                echo '''
+                Stage 7: Deploy to Production
+                Task: Deploy the application to a production server.
+                Tool: AWS EC2 (Production)
+                '''
             }
         }
     }
-
     post {
         always {
-            emailext (
-                subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                body: "Build Status: ${currentBuild.result}",
-                to: "qasimziak85@gmail.com",
-                attachLog: true
-            )
+            script {
+                def currentStage = env.STAGE_NAME
+                def status = currentBuild.currentResult
+                emailext(
+                    to: 'qasimziak85@gmail.com',
+                    subject: "${currentStage} Stage: ${status}",
+                    body: "${currentStage} stage completed with status: ${status}",
+                    attachmentsPattern: "*/.log"
+                )
+            }
         }
     }
-
 }
