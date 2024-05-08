@@ -1,71 +1,72 @@
 pipeline {
-    agent any
+    agent any // Specifies that the pipeline can run on any available agent/node
     
+    // Triggers the pipeline to run periodically using the SCM polling strategy
     triggers {
         pollSCM('* * * * *') // Poll SCM every minute
     }
     
     stages {
-        stage('Build') {
+        stage('Build') { // Defines the "Build" stage
             steps {
                 echo '''
                 Stage 1: Build
                 Task: Build the code using a build automation tool to compile and package your code.
-                Tool: Maven
+                Tool: vS
                 '''
             }
         }
-        stage('Unit and Integration Tests') {
+        stage('Unit and Integration Tests') { // Defines the "Unit and Integration Tests" stage
             steps {
                 echo '''
                 Stage 2: Unit and Integration Tests
-                Task: Run unit tests to ensure the code functions as expected and run integration tests to ensure the different components of the application work together as expected.
-                Tools: JUnit (for Unit Tests), TestNG (for Integration Tests)
+                Task: Run unit tests to ensure the code functions as expected .
+                Tools: trello , 
                 '''
             }
         }
-        stage('Code Analysis') {
+        stage('Code Analysis') { // Defines the "Code Analysis" stage
             steps {
                 echo '''
                 Stage 3: Code Analysis
-                Task: Integrate a code analysis tool to analyze the code and ensure it meets industry standards.
-                Tool: SonarQube
+                Task: Integrate a code analysis tool to analyze the code.
+                Tool: sonar
                 '''
             }
         }
-        stage('Security Scan') {
+        stage('Security Scan') { // Defines the "Security Scan" stage
             steps {
                 echo '''
                 Stage 4: Security Scan
-                Task: Perform a security scan on the code using a tool to identify any vulnerabilities.
-                Tool: OWASP Dependency-Check
+                Task: Perform a security scan.
+                Tool: OWASP.
                 '''
             }
         }
-        stage('Deploy to Staging') {
+        stage('Deploy to Staging') { // Defines the "Deploy to Staging" stage
             steps {
                 echo '''
                 Stage 5: Deploy to Staging
                 Task: Deploy the application to a staging server.
-                Tool: AWS EC2 (Staging)
+                Tool: AWS.
                 '''
             }
         }
-        stage('Integration Tests on Staging') {
+        stage('Integration Tests on Staging') { // Defines the "Integration Tests on Staging" stage
             steps {
                 echo '''
                 Stage 6: Integration Tests on Staging
-                Task: Run integration tests on the staging environment to ensure the application functions as expected in a production-like environment.
-                Tool: Selenium
+                Task: Run integration tests on the staging environment.
+                Tool: trello
                 '''
             }
         }
-        stage('Deploy to Production') {
+        stage('Deploy to Production') { // Defines the "Deploy to Production" stage
             steps {
                 echo '''
                 Stage 7: Deploy to Production
                 Task: Deploy the application to a production server.
-                Tool: AWS EC2 (Production)
+                Tool: AWS.
                 '''
             }
         }
@@ -73,16 +74,12 @@ pipeline {
     
     post {
         always {
-            script {
-                def currentStage = env.STAGE_NAME
-                def status = currentBuild.currentResult
-                emailext(
-                    to: 'qasimziak85@gmail.com',
-                    subject: "${currentStage} Stage: ${status}",
-                    body: "${currentStage} stage completed with status: ${status}",
-                    attachmentsPattern: "*/.log"
-                )
-            }
+            // Send email notification with pipeline status
+            // emailext attachLog: true, // Attach the build log (Note: this line is commented out as the emailext plugin is not working)
+            mail to: 'qasimziak33@gmail.com', // Recipient email address
+                 subject: 'Pipeline Status', // Email subject
+                 body: "The pipeline has completed. Status: ${currentBuild.currentResult}", // Email body
+                 from: 'qasimziak85@gmail.com' // Sender email address
         }
     }
 }
