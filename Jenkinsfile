@@ -74,6 +74,7 @@ pipeline {
      post {
         always {
             // Send email notification
+            emailext attachLog: true,
             mail to: 'qasimziak33@gmail.com',
                  subject: 'Pipeline Status',
                  body: "The pipeline has completed. Status: ${currentBuild.currentResult}",
