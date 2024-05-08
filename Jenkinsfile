@@ -70,15 +70,14 @@ pipeline {
             }
         }
     }
-    
      post {
         always {
-            // Send email notification
+            // Send email notification with attached build log
             emailext attachLog: true,
-            mail to: 'qasimziak33@gmail.com',
-                 subject: 'Pipeline Status',
-                 body: "The pipeline has completed. Status: ${currentBuild.currentResult}",
-                 from: 'qasimziak85@gmail.com.com'
+                     to: 'qasimziak33@gmail.com',
+                     subject: 'Pipeline Status',
+                     body: "The pipeline has completed. Status: ${currentBuild.currentResult}",
+                     from: 'qasimziak85@gmail.com'
         }
     }
 }
