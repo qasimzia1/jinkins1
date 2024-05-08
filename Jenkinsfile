@@ -53,7 +53,7 @@ pipeline {
             emailext (
                 subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
                 body: "Build Status: ${currentBuild.result}",
-                to: "your_email@example.com",
+                to: "qasimziak85@gmail.com",
                 attachLog: true
             )
         }
