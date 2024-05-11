@@ -6,8 +6,8 @@ pipeline {
         booleanParam(name: 'attachLog', defaultValue: true, description: 'Attach build log to email')
     }
 
-    triggers {
-        pollSCM('H/5 * * * *')
+      triggers {
+        pollSCM('* * * * *') // Poll SCM every minute
     }
 
     stages {
