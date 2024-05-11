@@ -61,7 +61,7 @@ pipeline {
                 failure {
                     emailext(
                         subject: 'Security Scan - Vulnerabilities Found!',
-                        body: 'Security scan detected vulnerabilities! Address them before deployment.',
+                        body: 'Security scan detected vulnerabilities! Address them before deployment..',
                         to: "${params.emailRecipient}",
                         attachLog: "${params.attachLog}"
                     )
