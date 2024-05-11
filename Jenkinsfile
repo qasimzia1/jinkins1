@@ -33,7 +33,7 @@ pipeline {
                 failure {
                     emailext(
                         subject: 'Unit & Integration Tests - Failed!',
-                        body: 'Unit and Integration Tests failed! Check the logs for details.',
+                        body: 'Unit and Integration Tests failed! Check the logs for details..',
                         to: "${params.emailRecipient}",
                         attachLog: "${params.attachLog}"
                     )
